@@ -1,0 +1,9 @@
+@host=http://localhost:5059
+POST {{host}}/asset/add
+Content-Type: application/json
+
+{
+    "amount" : "20.0",
+    "description" : "Engin Santader Dollar",
+    "CurrencyType": 1
+}
