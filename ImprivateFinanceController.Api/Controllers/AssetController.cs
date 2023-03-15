@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ImprivateFinanceController.Api.Contracts;
 
 namespace ImprivateFinanceController.Api.Controllers;
 
@@ -15,7 +16,7 @@ public class AssetController : ControllerBase
     }
 
     [HttpPost("add")]
-    public void AddAsset( AssetRow asset)
+    public void AddAsset(AssetRow asset)
     {
         assets.Add(asset);
     }

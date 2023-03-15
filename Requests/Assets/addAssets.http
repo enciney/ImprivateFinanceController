@@ -3,7 +3,9 @@ POST {{host}}/asset/add
 Content-Type: application/json
 
 {
-    "amount" : "20.0",
-    "description" : "Engin Santader Dollar",
-    "CurrencyType": 1
+    "money" : {
+        "amount" : "20.0",
+        "CurrencyType": 1
+    },
+     "description" : "Engin Santader Dollar"
 }

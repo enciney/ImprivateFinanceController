@@ -1,5 +1,4 @@
-namespace ImprivateFinanceController.Api;
-
+namespace ImprivateFinanceController.Api.Contracts;
 public enum Currency 
 {
     TRY = 0,
