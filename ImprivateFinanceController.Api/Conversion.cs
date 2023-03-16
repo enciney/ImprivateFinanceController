@@ -1,21 +1,25 @@
 
+using ImprivateFinanceController.Api.Clients;
+using ImprivateFinanceController.Api.Common;
 using ImprivateFinanceController.Api.Contracts;
 namespace ImprivateFinanceController.Api;
 
 public interface IConverter
 {   
-    public Money Convert(Money money, Currency targetCurrency);
+    public List<ExchangeValue> Convert(Money money, Currency targetCurrency);
 }
 
 public class Converter : IConverter
 {
-    public Converter()
+    private readonly ExchangeClient exchangeClient;
+    public Converter(ExchangeClient exchangeClient)
     {
+        this.exchangeClient = exchangeClient;
     }
-    // http://www.floatrates.com/daily/usd.json
     // https://goldprice.org/best-gold-price
-    public Money Convert(Money money, Currency targetCurrency)
+    public List<ExchangeValue> Convert(Money money, Currency targetCurrency)
     {
         return null;
+        // return exchangeClient.Send().GetAwaiter().GetResult();
     }
 }
