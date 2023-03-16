@@ -8,18 +8,25 @@ namespace ImprivateFinanceController.Api.Controllers;
 [Route("[controller]")]
 public class ExchangeController : ControllerBase
 {
-    
     private readonly ExchangeClient exchangeClient;
+    private readonly CommodityClient commodityClient;
 
-    public ExchangeController(ExchangeClient exchangeClient)
+    public ExchangeController(ExchangeClient exchangeClient, CommodityClient commodityClient)
     {
         this.exchangeClient = exchangeClient;
+        this.commodityClient = commodityClient;
     }
 
-    [HttpGet("get")]
+    [HttpGet("exchanges")]
     public IList<ExchangeValue> GetExchanges()
     {
         return exchangeClient.Send().GetAwaiter().GetResult();
+    }
+
+    [HttpGet("commodityExchanges")]
+    public IList<CommodityValue> GetCommodity()
+    {
+        return commodityClient.Send().GetAwaiter().GetResult();
     }
 
 }

@@ -4,7 +4,7 @@ namespace ImprivateFinanceController.Api.Contracts;
 
 public class ExchangeValue
 {
-     [JsonIgnore]
+    [JsonIgnore]
     public string SourceCurreny{get; set;} = null!;
     public string Code { get; set; } = null!;
     public double Rate { get; set; }

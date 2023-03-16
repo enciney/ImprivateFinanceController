@@ -9,6 +9,7 @@ public static class DependencyInjection
     {
         services.AddScoped<HttpClientFactory>();
         services.AddScoped<ExchangeClient>();
+        services.AddScoped<CommodityClient>();
         services.AddScoped<IConverter,Converter>();
         return services;
         
