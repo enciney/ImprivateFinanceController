@@ -3,23 +3,22 @@ using ImprivateFinanceController.Api.Common;
 using ImprivateFinanceController.Api.Contracts;
 using Newtonsoft.Json;
 using System.Linq;
+using AutoMapper;
+using ImprivateFinanceController.Api.Dtos;
 
 namespace ImprivateFinanceController.Api.Clients;
 
-public class CommodityClient
+public class CommodityClient : BaseClient
 {
-    public const string Host = "https://data-asg.goldprice.org/dbXRates/{0}";
-    
-    private readonly HttpClientFactory httpClientFactory;
-
-    public CommodityClient(HttpClientFactory httpClientFactory)
+    public CommodityClient(HttpClientFactory httpClientFactory, IMapper mapper)
+    : base(httpClientFactory, mapper)
     {
-        this.httpClientFactory = httpClientFactory;
+        this.Host = "https://data-asg.goldprice.org/dbXRates/{0}";
     }
 
-    public async Task<IList<CommodityValue>> Send(){
+    public async Task<IEnumerable<ExchangeValueDto>> Send(){
 
-        List<CommodityValue> exchangeVaues = new ();
+        List<CommodityValue> exchangeValues = new ();
         foreach(var currency in Enum.GetValues<Currency>())
         {
             if(currency == Currency.AUX)
@@ -30,8 +29,8 @@ public class CommodityClient
             var response = await client.SendAsync(new HttpRequestMessage(){ Method = HttpMethod.Get });
             var result = await response.Content.ReadAsStringAsync();
             var exchanges = JsonConvert.DeserializeObject<CommodityValueJson>(result);
-            exchangeVaues.Add(exchanges.Items.First());
+            exchangeValues.Add(exchanges.Items.First());
         }
-        return exchangeVaues;
+        return exchangeValues.Select(exVal=> mapper.Map<ExchangeValueDto>(exVal));
     }
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ImprivateFinanceController.Api.Contracts;
 using ImprivateFinanceController.Api.Clients;
+using ImprivateFinanceController.Api.Dtos;
 
 namespace ImprivateFinanceController.Api.Controllers;
 
@@ -18,15 +19,11 @@ public class ExchangeController : ControllerBase
     }
 
     [HttpGet("exchanges")]
-    public IList<ExchangeValue> GetExchanges()
+    public IEnumerable<ExchangeValueDto> GetExchanges()
     {
-        return exchangeClient.Send().GetAwaiter().GetResult();
-    }
-
-    [HttpGet("commodityExchanges")]
-    public IList<CommodityValue> GetCommodity()
-    {
-        return commodityClient.Send().GetAwaiter().GetResult();
+        var exchangeValues = exchangeClient.Send().GetAwaiter().GetResult();
+        var commodityValues = commodityClient.Send().GetAwaiter().GetResult();
+        return exchangeValues.Union(commodityValues);
     }
 
 }

@@ -3,23 +3,24 @@ using ImprivateFinanceController.Api.Common;
 using ImprivateFinanceController.Api.Contracts;
 using Newtonsoft.Json;
 using System.Linq;
+using AutoMapper;
+using ImprivateFinanceController.Api.Dtos;
 
 namespace ImprivateFinanceController.Api.Clients;
 
-public class ExchangeClient
+public class ExchangeClient : BaseClient
 {
-    //https://www.iban.com/exchange-rates-api
-    public const string Host = "http://www.floatrates.com/daily/{0}.json";
-    private readonly HttpClientFactory httpClientFactory;
-
-    public ExchangeClient(HttpClientFactory httpClientFactory)
+    
+    public ExchangeClient(HttpClientFactory httpClientFactory, IMapper mapper)
+    : base(httpClientFactory, mapper)
     {
-        this.httpClientFactory = httpClientFactory;
+        //https://www.iban.com/exchange-rates-api
+        this.Host = "http://www.floatrates.com/daily/{0}.json";
     }
 
-    public async Task<IList<ExchangeValue>> Send(){
+    public async Task<IEnumerable<ExchangeValueDto>> Send(){
 
-        List<ExchangeValue> exchangeVaues = new ();
+        List<ExchangeValue> exchangeValues = new ();
         foreach(var currency in Enum.GetValues<Currency>())
         {
             if(currency == Currency.AUX){
@@ -29,7 +30,7 @@ public class ExchangeClient
             var response = await client.SendAsync(new HttpRequestMessage(){ Method = HttpMethod.Get });
             var result = await response.Content.ReadAsStringAsync();
             var exchanges = JsonConvert.DeserializeObject<Dictionary<string,ExchangeValue>>(result);
-            exchangeVaues.AddRange(
+            exchangeValues.AddRange(
                 exchanges.Where(s => Enum.GetNames<Currency>().Contains(s.Key, StringComparer.CurrentCultureIgnoreCase))
                 .Select(s => new ExchangeValue() 
                 { 
@@ -39,6 +40,6 @@ public class ExchangeClient
                 })
             );
         }
-        return exchangeVaues;
+        return exchangeValues.Select( exVal => mapper.Map<ExchangeValueDto>(exVal));
     }
 }

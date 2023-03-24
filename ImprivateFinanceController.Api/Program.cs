@@ -1,4 +1,5 @@
 using ImprivateFinanceController.Api;
+using ImprivateFinanceController.Api.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -9,7 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     builder.Services.AddHttpClient();
-    builder.Services.AddPresentation();
+    builder.Services.AddPresentation()
+    .AddMappings();
+    
 }
 
 

@@ -1,0 +1,8 @@
+-> add repository and OUW pattern for assetRow and then connect it to a data source -> 
+https://code-maze.com/net-core-web-development-part4/
+https://medium.com/@mxcmxc/unit-of-work-with-repository-pattern-boilerplate-518726e4beb7
+https://www.c-sharpcorner.com/article/implement-unit-of-work-and-generic-repository-pattern-in-a-web-api-net-core-pro/
+-> add a dictionary for hold convertion like Dictionary<(SourceCurrency,TargetCurrency), Rate>
+-> add a cache logic to hold above dictionary and refresh it in particular time
+-> move all of the magic strings to the appsettings and use option pattern , user-secrets option can be usable on demand
+-> add Mediatr and seperate Command/Query
