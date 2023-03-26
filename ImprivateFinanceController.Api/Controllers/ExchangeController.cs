@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ImprivateFinanceController.Api.Contracts;
 using ImprivateFinanceController.Api.Clients;
 using ImprivateFinanceController.Api.Dtos;
+using ImprivateFinanceController.Api.Services;
 
 namespace ImprivateFinanceController.Api.Controllers;
 
@@ -9,21 +10,18 @@ namespace ImprivateFinanceController.Api.Controllers;
 [Route("[controller]")]
 public class ExchangeController : ControllerBase
 {
-    private readonly ExchangeClient exchangeClient;
-    private readonly CommodityClient commodityClient;
+    // TO DO create a inerface for this service
+    private readonly ExchangeService exchangeService;
 
-    public ExchangeController(ExchangeClient exchangeClient, CommodityClient commodityClient)
+    public ExchangeController(ExchangeService exchangeService)
     {
-        this.exchangeClient = exchangeClient;
-        this.commodityClient = commodityClient;
+        this.exchangeService = exchangeService;
     }
 
     [HttpGet("exchanges")]
-    public IEnumerable<ExchangeValueDto> GetExchanges()
+    public async Task<IEnumerable<ExchangeValueDto>> GetExchanges()
     {
-        var exchangeValues = exchangeClient.Send().GetAwaiter().GetResult();
-        var commodityValues = commodityClient.Send().GetAwaiter().GetResult();
-        return exchangeValues.Union(commodityValues);
+        return await exchangeService.GetExchangeRates();
     }
 
 }

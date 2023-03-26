@@ -5,32 +5,19 @@ using Newtonsoft.Json;
 using System.Linq;
 using AutoMapper;
 using ImprivateFinanceController.Api.Dtos;
+using ImprivateFinanceController.Api.Common.Interfaces;
 
 namespace ImprivateFinanceController.Api.Clients;
 
-public class CommodityClient : BaseClient
+public class CommodityClient : BaseClient,ICommodityClient
 {
-    public CommodityClient(HttpClientFactory httpClientFactory, IMapper mapper)
-    : base(httpClientFactory, mapper)
+    public CommodityClient(HttpClientFactory httpClientFactory)
+    : base(httpClientFactory)
     {
         this.Host = "https://data-asg.goldprice.org/dbXRates/{0}";
     }
 
-    public async Task<IEnumerable<ExchangeValueDto>> Send(){
-
-        List<CommodityValue> exchangeValues = new ();
-        foreach(var currency in Enum.GetValues<Currency>())
-        {
-            if(currency == Currency.AUX)
-            {
-                continue;
-            }
-            var client = httpClientFactory.GetClient(string.Format(Host, currency.ToString()));
-            var response = await client.SendAsync(new HttpRequestMessage(){ Method = HttpMethod.Get });
-            var result = await response.Content.ReadAsStringAsync();
-            var exchanges = JsonConvert.DeserializeObject<CommodityValueJson>(result);
-            exchangeValues.Add(exchanges.Items.First());
-        }
-        return exchangeValues.Select(exVal=> mapper.Map<ExchangeValueDto>(exVal));
+    public async Task<CommodityValueJson> GetCommoditiesByCurrency(Currency currency){
+        return await Send<CommodityValueJson>(currency);
     }
 }
