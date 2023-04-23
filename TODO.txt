@@ -13,3 +13,4 @@ https://www.c-sharpcorner.com/article/implement-unit-of-work-and-generic-reposit
 # Infrastructure Layer -> 
     * all Persistence related things, ORM mapping, repositories, custom middlewares
     * all common interfaces and extension methods, enum definitions
+# use a configuration logic for React to read app settings like web api url

@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
-using ImprivateFinanceController.Api.Contracts;
-using ImprivateFinanceController.Api.Clients;
 using ImprivateFinanceController.Api.Dtos;
 using ImprivateFinanceController.Api.Services;
+using Microsoft.AspNetCore.Cors;
 
 namespace ImprivateFinanceController.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[EnableCors("AllowAll")]
 public class ExchangeController : ControllerBase
 {
     // TO DO create a inerface for this service
